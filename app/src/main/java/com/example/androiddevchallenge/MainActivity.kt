@@ -18,15 +18,15 @@ package com.example.androiddevchallenge
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -35,19 +35,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.androiddevchallenge.ui.theme.MyTheme
-import androidx.compose.foundation.Image as Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.ui.Alignment
-
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MyTheme {
-                LazyColumn() {
+                LazyColumn {
                     item {
-                        Image(painter = painterResource(id = R.drawable.header), contentDescription = "")
+                        Image(
+                            painter = painterResource(id = R.drawable.header),
+                            contentDescription = ""
+                        )
                     }
                     item {
                         Card(R.drawable._00, "Taro")
@@ -89,12 +88,12 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun Card(rid: Int, name: String){
+fun Card(rid: Int, name: String) {
     val image = painterResource(id = rid)
 
-    Column (
+    Column(
         Modifier
-//            .clickable(onClick = onClick)
+//            .clickable(onClick = )
             .padding(16.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.End,
@@ -103,6 +102,7 @@ fun Card(rid: Int, name: String){
     ) {
         val imageModifier = Modifier
             .wrapContentSize()
+            .clip(shape = RoundedCornerShape(14.dp))
         Image(image, "", modifier = imageModifier, contentScale = ContentScale.Crop)
         Text(text = name, style = TextStyle(fontSize = 20.sp, textAlign = TextAlign.End))
 
@@ -114,7 +114,7 @@ fun Card(rid: Int, name: String){
 @Composable
 fun LightPreview() {
     MyTheme {
-        LazyColumn() {
+        LazyColumn {
             item {
                 Image(painter = painterResource(id = R.drawable.header), contentDescription = "")
             }
@@ -159,7 +159,7 @@ fun LightPreview() {
 @Composable
 fun DarkPreview() {
     MyTheme {
-        LazyColumn() {
+        LazyColumn {
             item {
                 Image(painter = painterResource(id = R.drawable.header), contentDescription = "")
             }
