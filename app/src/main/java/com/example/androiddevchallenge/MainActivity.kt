@@ -145,7 +145,6 @@ fun Card(rid: Int, name: String, navController: NavController) {
             .clip(shape = RoundedCornerShape(14.dp))
         Image(image, "", modifier = imageModifier, contentScale = ContentScale.Crop)
         Text(text = name, style = TextStyle(fontSize = 20.sp, textAlign = TextAlign.End))
-
     }
 }
 
@@ -184,7 +183,6 @@ fun getAnimalName(rid: Int) =
         R.drawable._09 -> "JF"
         R.drawable._10 -> "Dolly"
         else -> ""
-
     }
 
 fun getAnimalAge(rid: Int) =
@@ -201,14 +199,13 @@ fun getAnimalAge(rid: Int) =
         R.drawable._09 -> "??"
         R.drawable._10 -> "0"
         else -> ""
-
     }
 
 @Preview("Light Theme", widthDp = 360, heightDp = 640)
 @Composable
 fun LightPreview() {
     MyTheme {
-            ComposeNavigation()
+        ComposeNavigation()
     }
 }
 
@@ -216,6 +213,6 @@ fun LightPreview() {
 @Composable
 fun DarkPreview() {
     MyTheme(darkTheme = true) {
-            ComposeNavigation()
+        ComposeNavigation()
     }
 }
