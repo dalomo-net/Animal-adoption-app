@@ -139,6 +139,8 @@ fun Card(rid: Int, name: String, navController: NavController) {
 @Composable
 fun Detail(rid: Int?) {
     val image = painterResource(id = rid!!)
+    val name = getAnimalName(rid)
+    val age = getAnimalAge(rid)
 
     Column(
         Modifier
@@ -149,9 +151,45 @@ fun Detail(rid: Int?) {
             .wrapContentSize()
             .clip(shape = RoundedCornerShape(14.dp))
         Image(image, "", modifier = imageModifier, contentScale = ContentScale.Crop)
-        Text(text = "name", style = TextStyle(fontSize = 20.sp))
+        Text(text = name, style = TextStyle(fontSize = 50.sp))
+        Text(text = "Age : $age", style = TextStyle(fontSize = 20.sp))
+        Text(text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
     }
 }
+
+fun getAnimalName(rid: Int) =
+    when (rid) {
+        R.drawable._00 -> "Taro"
+        R.drawable._01 -> "Hanako"
+        R.drawable._02 -> "Goro"
+        R.drawable._03 -> "Yasu"
+        R.drawable._04 -> "Gonzo"
+        R.drawable._05 -> "Hina"
+        R.drawable._06 -> "Ken"
+        R.drawable._07 -> "Tomo"
+        R.drawable._08 -> "Ichi"
+        R.drawable._09 -> "JF"
+        R.drawable._10 -> "Dolly"
+        else -> ""
+
+    }
+
+fun getAnimalAge(rid: Int) =
+    when (rid) {
+        R.drawable._00 -> "33"
+        R.drawable._01 -> "27"
+        R.drawable._02 -> "56"
+        R.drawable._03 -> "10000"
+        R.drawable._04 -> "13"
+        R.drawable._05 -> "18"
+        R.drawable._06 -> "44"
+        R.drawable._07 -> "3"
+        R.drawable._08 -> "20"
+        R.drawable._09 -> "??"
+        R.drawable._10 -> "0"
+        else -> ""
+
+    }
 
 //@Preview("Light Theme", widthDp = 360, heightDp = 640)
 //@Composable
