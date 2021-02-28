@@ -19,6 +19,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,9 +32,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavType
+import androidx.navigation.compose.*
 import com.example.androiddevchallenge.ui.theme.MyTheme
 
 class MainActivity : AppCompatActivity() {
@@ -41,59 +44,83 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyTheme {
-                LazyColumn {
-                    item {
-                        Image(
-                            painter = painterResource(id = R.drawable.header),
-                            contentDescription = ""
-                        )
-                    }
-                    item {
-                        Card(R.drawable._00, "Taro")
-                    }
-                    item {
-                        Card(R.drawable._01, "Hanako")
-                    }
-                    item {
-                        Card(R.drawable._02, "Goro")
-                    }
-                    item {
-                        Card(R.drawable._03, "Yasu")
-                    }
-                    item {
-                        Card(R.drawable._04, "Gonzo")
-                    }
-                    item {
-                        Card(R.drawable._05, "Hina")
-                    }
-                    item {
-                        Card(R.drawable._06, "Ken")
-                    }
-                    item {
-                        Card(R.drawable._07, "Kan")
-                    }
-                    item {
-                        Card(R.drawable._08, "Ichi")
-                    }
-                    item {
-                        Card(R.drawable._09, "JF")
-                    }
-                    item {
-                        Card(R.drawable._10, "Dolly")
-                    }
-                }
+                ComposeNavigation()
             }
         }
     }
 }
 
 @Composable
-fun Card(rid: Int, name: String) {
+fun ComposeNavigation() {
+    val navController = rememberNavController()
+    NavHost(
+        navController = navController,
+        startDestination = "list_screen"
+    ) {
+        composable("list_screen") {
+            LazyList(navController = navController)
+        }
+        composable(
+            "detail_screen/{uid}",
+            arguments = listOf(navArgument("uid") { type = NavType.IntType })
+        ) { backStackEntry ->
+            Detail(backStackEntry.arguments?.getInt("uid"))
+        }
+    }
+}
+
+@Composable
+fun LazyList(navController: NavController) {
+    LazyColumn {
+        item {
+            Image(
+                painter = painterResource(id = R.drawable.header),
+                contentDescription = ""
+            )
+        }
+        item {
+            Card(R.drawable._00, "Taro", navController)
+        }
+        item {
+            Card(R.drawable._01, "Hanako", navController)
+        }
+        item {
+            Card(R.drawable._02, "Goro", navController)
+        }
+        item {
+            Card(R.drawable._03, "Yasu", navController)
+        }
+        item {
+            Card(R.drawable._04, "Gonzo", navController)
+        }
+        item {
+            Card(R.drawable._05, "Hina", navController)
+        }
+        item {
+            Card(R.drawable._06, "Ken", navController)
+        }
+        item {
+            Card(R.drawable._07, "Kan", navController)
+        }
+        item {
+            Card(R.drawable._08, "Ichi", navController)
+        }
+        item {
+            Card(R.drawable._09, "JF", navController)
+        }
+        item {
+            Card(R.drawable._10, "Dolly", navController)
+        }
+    }
+}
+
+@Composable
+fun Card(rid: Int, name: String, navController: NavController) {
     val image = painterResource(id = rid)
 
     Column(
         Modifier
-//            .clickable(onClick = )
+            .clickable(onClick = { navController.navigate("detail_screen/$rid") })
             .padding(16.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.End,
@@ -109,93 +136,109 @@ fun Card(rid: Int, name: String) {
     }
 }
 
-
-@Preview("Light Theme", widthDp = 360, heightDp = 640)
 @Composable
-fun LightPreview() {
-    MyTheme {
-        LazyColumn {
-            item {
-                Image(painter = painterResource(id = R.drawable.header), contentDescription = "")
-            }
-            item {
-                Card(R.drawable._00, "Taro")
-            }
-            item {
-                Card(R.drawable._01, "Hanako")
-            }
-            item {
-                Card(R.drawable._02, "Goro")
-            }
-            item {
-                Card(R.drawable._03, "Yasu")
-            }
-            item {
-                Card(R.drawable._04, "Gonzo")
-            }
-            item {
-                Card(R.drawable._05, "Hina")
-            }
-            item {
-                Card(R.drawable._06, "Ken")
-            }
-            item {
-                Card(R.drawable._07, "Tomo")
-            }
-            item {
-                Card(R.drawable._08, "Ichi")
-            }
-            item {
-                Card(R.drawable._09, "JF")
-            }
-            item {
-                Card(R.drawable._10, "Dolly")
-            }
-        }
+fun Detail(rid: Int?) {
+    val image = painterResource(id = rid!!)
+
+    Column(
+        Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+    ) {
+        val imageModifier = Modifier
+            .wrapContentSize()
+            .clip(shape = RoundedCornerShape(14.dp))
+        Image(image, "", modifier = imageModifier, contentScale = ContentScale.Crop)
+        Text(text = "name", style = TextStyle(fontSize = 20.sp))
     }
 }
 
-@Preview("Dark Theme", widthDp = 360, heightDp = 640)
-@Composable
-fun DarkPreview() {
-    MyTheme {
-        LazyColumn {
-            item {
-                Image(painter = painterResource(id = R.drawable.header), contentDescription = "")
-            }
-            item {
-                Card(R.drawable._00, "Taro")
-            }
-            item {
-                Card(R.drawable._01, "Hanako")
-            }
-            item {
-                Card(R.drawable._02, "Goro")
-            }
-            item {
-                Card(R.drawable._03, "Yasu")
-            }
-            item {
-                Card(R.drawable._04, "Gonzo")
-            }
-            item {
-                Card(R.drawable._05, "Hina")
-            }
-            item {
-                Card(R.drawable._06, "Ken")
-            }
-            item {
-                Card(R.drawable._07, "Tomo")
-            }
-            item {
-                Card(R.drawable._08, "Ichi")
-            }
-            item {
-                Card(R.drawable._09, "JF")
-            }
-            item {
-                Card(R.drawable._10, "Dolly")
-            }
-        }
-    }
-}
+//@Preview("Light Theme", widthDp = 360, heightDp = 640)
+//@Composable
+//fun LightPreview() {
+//    MyTheme {
+//        LazyColumn {
+//            item {
+//                Image(painter = painterResource(id = R.drawable.header), contentDescription = "")
+//            }
+//            item {
+//                Card(R.drawable._00, "Taro")
+//            }
+//            item {
+//                Card(R.drawable._01, "Hanako")
+//            }
+//            item {
+//                Card(R.drawable._02, "Goro")
+//            }
+//            item {
+//                Card(R.drawable._03, "Yasu")
+//            }
+//            item {
+//                Card(R.drawable._04, "Gonzo")
+//            }
+//            item {
+//                Card(R.drawable._05, "Hina")
+//            }
+//            item {
+//                Card(R.drawable._06, "Ken")
+//            }
+//            item {
+//                Card(R.drawable._07, "Tomo")
+//            }
+//            item {
+//                Card(R.drawable._08, "Ichi")
+//            }
+//            item {
+//                Card(R.drawable._09, "JF")
+//            }
+//            item {
+//                Card(R.drawable._10, "Dolly")
+//            }
+//        }
+//    }
+//}
+//
+//@Preview("Dark Theme", widthDp = 360, heightDp = 640)
+//@Composable
+//fun DarkPreview() {
+//    MyTheme {
+//        LazyColumn {
+//            item {
+//                Image(painter = painterResource(id = R.drawable.header), contentDescription = "")
+//            }
+//            item {
+//                Card(R.drawable._00, "Taro")
+//            }
+//            item {
+//                Card(R.drawable._01, "Hanako")
+//            }
+//            item {
+//                Card(R.drawable._02, "Goro")
+//            }
+//            item {
+//                Card(R.drawable._03, "Yasu")
+//            }
+//            item {
+//                Card(R.drawable._04, "Gonzo")
+//            }
+//            item {
+//                Card(R.drawable._05, "Hina")
+//            }
+//            item {
+//                Card(R.drawable._06, "Ken")
+//            }
+//            item {
+//                Card(R.drawable._07, "Tomo")
+//            }
+//            item {
+//                Card(R.drawable._08, "Ichi")
+//            }
+//            item {
+//                Card(R.drawable._09, "JF")
+//            }
+//            item {
+//                Card(R.drawable._10, "Dolly")
+//            }
+//        }
+//    }
+//}
